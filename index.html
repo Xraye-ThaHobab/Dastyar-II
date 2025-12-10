@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پیش‌فاکتور هوشمند - دستیار امنیت</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Background -->
+    <div class="ios-background"></div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Logo Header -->
+        <div class="logo-header">
+            <div class="logo-placeholder">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <h1>دستیار امنیت</h1>
+            <p>سیستم‌های هوشمند ساختمان</p>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-steps">
+                <div class="step active" data-step="1">
+                    <div class="step-circle">1</div>
+                    <span>اطلاعات</span>
+                </div>
+                <div class="step" data-step="2">
+                    <div class="step-circle">2</div>
+                    <span>ساختمان</span>
+                </div>
+                <div class="step" data-step="3">
+                    <div class="step-circle">3</div>
+                    <span>مانیتور</span>
+                </div>
+                <div class="step" data-step="4">
+                    <div class="step-circle">4</div>
+                    <span>پنل</span>
+                </div>
+                <div class="step" data-step="5">
+                    <div class="step-circle">5</div>
+                    <span>تکمیل</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 1: Customer Info -->
+        <div class="ios-card active" id="step1">
+            <div class="card-icon">
+                <i class="fas fa-user-circle"></i>
+            </div>
+            <h2>اطلاعات مشتری</h2>
+            <p class="subtitle">لطفا اطلاعات تماس خود را وارد کنید</p>
+            
+            <div class="form-container">
+                <div class="input-group">
+                    <label>نام و نام خانوادگی</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="fullName" placeholder="مثال: علی احمدی">
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label>شماره تماس</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-phone"></i>
+                        <input type="tel" id="phone" placeholder="09123456789" maxlength="11">
+                    </div>
+                </div>
+            </div>
+            
+            <button class="ios-button primary" onclick="nextStep(1)">
+                ادامه
+                <i class="fas fa-arrow-left"></i>
+            </button>
+        </div>
+
+        <!-- Step 2: Building Info -->
+        <div class="ios-card" id="step2">
+            <div class="card-icon">
+                <i class="fas fa-building"></i>
+            </div>
+            <h2>مشخصات ساختمان</h2>
+            <p class="subtitle">تعداد واحدها و ورودی‌ها را مشخص کنید</p>
+            
+            <div class="form-container">
+                <div class="counter-group">
+                    <label>
+                        <i class="fas fa-home"></i>
+                        تعداد واحدها
+                    </label>
+                    <div class="ios-counter">
+                        <button onclick="changeValue('units', -1)">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <input type="number" id="units" value="4" readonly>
+                        <button onclick="changeValue('units', 1)">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    <small>حداقل 1 و حداکثر 50 واحد</small>
+                </div>
+                
+                <div class="counter-group">
+                    <label>
+                        <i class="fas fa-door-open"></i>
+                        تعداد ورودی‌ها
+                    </label>
+                    <div class="ios-counter">
+                        <button onclick="changeValue('entries', -1)">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <input type="number" id="entries" value="1" readonly>
+                        <button onclick="changeValue('entries', 1)">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    <small>حداقل 1 و حداکثر 10 ورودی</small>
+                </div>
+            </div>
+            
+            <div class="button-group">
+                <button class="ios-button secondary" onclick="prevStep(2)">
+                    <i class="fas fa-arrow-right"></i>
+                    قبلی
+                </button>
+                <button class="ios-button primary" onclick="nextStep(2)">
+                    ادامه
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 3: Monitor Selection -->
+        <div class="ios-card wide" id="step3">
+            <div class="card-icon">
+                <i class="fas fa-tv"></i>
+            </div>
+            <h2>انتخاب مانیتور</h2>
+            <p class="subtitle">برای هر واحد یک مانیتور انتخاب کنید</p>
+            
+            <!-- Smart Guide -->
+            <div class="smart-guide" id="smartGuide">
+                <i class="fas fa-lightbulb"></i>
+                <div class="guide-content">
+                    <strong>راهنمای هوشمند:</strong>
+                    <p id="guideText">برای ساختمان شما با <span id="guideUnits"></span> واحد، توصیه می‌کنیم از مانیتورهای سری C یا D استفاده کنید.</p>
+                </div>
+            </div>
+            
+            <div class="units-grid" id="unitsGrid"></div>
+            
+            <div class="button-group">
+                <button class="ios-button secondary" onclick="prevStep(3)">
+                    <i class="fas fa-arrow-right"></i>
+                    قبلی
+                </button>
+                <button class="ios-button primary" onclick="nextStep(3)">
+                    ادامه
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 4: Panel Selection -->
+        <div class="ios-card wide" id="step4">
+            <div class="card-icon">
+                <i class="fas fa-tablet-alt"></i>
+            </div>
+            <h2>انتخاب پنل</h2>
+            <p class="subtitle">پنل مدیریت مناسب ساختمان خود را انتخاب کنید</p>
+            
+            <!-- Smart Guide for Panel -->
+            <div class="smart-guide">
+                <i class="fas fa-lightbulb"></i>
+                <div class="guide-content">
+                    <strong>راهنمای هوشمند:</strong>
+                    <p id="panelGuide"></p>
+                </div>
+            </div>
+            
+            <div class="products-grid" id="panelsGrid"></div>
+            
+            <div class="button-group">
+                <button class="ios-button secondary" onclick="prevStep(4)">
+                    <i class="fas fa-arrow-right"></i>
+                    قبلی
+                </button>
+                <button class="ios-button primary" onclick="nextStep(4)">
+                    ادامه
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 5: Accessories & Services -->
+        <div class="ios-card wide" id="step5">
+            <div class="card-icon">
+                <i class="fas fa-puzzle-piece"></i>
+            </div>
+            <h2>لوازم جانبی و خدمات</h2>
+            <p class="subtitle">محصولات و خدمات مورد نیاز را انتخاب کنید</p>
+            
+            <!-- Accessories -->
+            <div class="section-title">
+                <i class="fas fa-box"></i>
+                <h3>لوازم جانبی</h3>
+            </div>
+            
+            <!-- Smart Guide for Accessories -->
+            <div class="smart-guide">
+                <i class="fas fa-lightbulb"></i>
+                <div class="guide-content">
+                    <strong>راهنمای هوشمند:</strong>
+                    <p id="accessoryGuide"></p>
+                </div>
+            </div>
+            
+            <div class="accessories-grid" id="accessoriesGrid"></div>
+            
+            <!-- Services -->
+            <div class="section-title">
+                <i class="fas fa-tools"></i>
+                <h3>خدمات نصب و پشتیبانی</h3>
+            </div>
+            
+            <div class="services-container">
+                <label class="service-card">
+                    <input type="checkbox" id="installation" onchange="updateServices()">
+                    <div class="service-content">
+                        <div class="service-icon">
+                            <i class="fas fa-wrench"></i>
+                        </div>
+                        <div class="service-info">
+                            <h4>نصب و راه‌اندازی</h4>
+                            <p>نصب تخصصی توسط تیم فنی</p>
+                        </div>
+                        <div class="service-price">۵,۰۰۰,۰۰۰ تومان</div>
+                        <div class="checkmark">
+                            <i class="fas fa-check"></i>
+                        </div>
+                    </div>
+                </label>
+            </div>
+            
+            <div class="button-group">
+                <button class="ios-button secondary" onclick="prevStep(5)">
+                    <i class="fas fa-arrow-right"></i>
+                    قبلی
+                </button>
+                <button class="ios-button success" onclick="generateInvoice()">
+                    <i class="fas fa-file-invoice"></i>
+                    ایجاد پیش‌فاکتور
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 6: Invoice -->
+        <div class="ios-card wide" id="step6">
+            <div class="invoice-wrapper" id="invoiceContent">
+                <div class="invoice-header">
+                    <div class="invoice-logo">
+                        <i class="fas fa-shield-alt"></i>
+                        <div>
+                            <h1>دستیار امنیت</h1>
+                            <p>سیستم‌های هوشمند ساختمان</p>
+                        </div>
+                    </div>
+                    <div class="invoice-meta">
+                        <div class="meta-item">
+                            <span>شماره فاکتور:</span>
+                            <strong id="invoiceNumber"></strong>
+                        </div>
+                        <div class="meta-item">
+                            <span>تاریخ:</span>
+                            <strong id="invoiceDate"></strong>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="invoice-customer">
+                    <h3><i class="fas fa-user"></i> مشخصات مشتری</h3>
+                    <div class="customer-details">
+                        <div class="detail-item">
+                            <span>نام:</span>
+                            <strong id="inv-name"></strong>
+                        </div>
+                        <div class="detail-item">
+                            <span>تلفن:</span>
+                            <strong id="inv-phone"></strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="invoice-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ردیف</th>
+                                <th>شرح کالا/خدمات</th>
+                                <th>تعداد</th>
+                                <th>قیمت واحد</th>
+                                <th>قیمت کل</th>
+                            </tr>
+                        </thead>
+                        <tbody id="invoiceItems"></tbody>
+                    </table>
+                </div>
+
+                <div class="invoice-summary">
+                    <div class="summary-item">
+                        <span>جمع کل:</span>
+                        <strong id="subtotal">0 تومان</strong>
+                    </div>
+                    <div class="summary-item">
+                        <span>مالیات (9%):</span>
+                        <strong id="tax">0 تومان</strong>
+                    </div>
+                    <div class="summary-item total">
+                        <span>مبلغ قابل پرداخت:</span>
+                        <strong id="total">0 تومان</strong>
+                    </div>
+                </div>
+
+                <div class="invoice-footer">
+                    <p><i class="fas fa-info-circle"></i> این پیش‌فاکتور تا 7 روز اعتبار دارد</p>
+                    <p><i class="fas fa-phone"></i> تماس: 05137133910 - 09153053428</p>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="ios-button secondary" onclick="prevStep(6)">
+                    <i class="fas fa-edit"></i>
+                    ویرایش
+                </button>
+                <button class="ios-button primary" onclick="downloadInvoice()">
+                    <i class="fas fa-download"></i>
+                    دانلود تصویر
+                </button>
+                <button class="ios-button success" onclick="resetForm()">
+                    <i class="fas fa-plus-circle"></i>
+                    فاکتور جدید
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
